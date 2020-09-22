@@ -62,7 +62,7 @@ const UserAuth = (props) => {
 
     return (<MicrosoftLogin
         clientId={'c4e63d26-dcf1-4d0a-bac1-ae0bc5afca83'}
-        authCallback={authHandler} redirectUri={'http://localhost:3000/baseform'}
+        authCallback={authHandler} redirectUri={'http://ankagr289.github.io'}
         graphScopes={['Calendars.ReadWrite', 'Group.ReadWrite.All']} />)
 };
 
