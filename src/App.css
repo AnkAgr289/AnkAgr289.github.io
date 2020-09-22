@@ -22,13 +22,13 @@
   color: white;
   font-size: xx-large;
   font-family: 'Segoe UI';
-  font-weight:'SemiBold';
+  font-weight: 'SemiBold';
   background-color: #6264A7;
 }
 
-.header{
- margin:30px;
- text-align: center;
+.header {
+  margin: 30px;
+  text-align: center;
 }
 
 .main {
@@ -44,6 +44,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -98,15 +99,17 @@
 }
 
 .assessmentFrame {
-  border: none; width:100%; height:100vh
+  border: none;
+  width: 100%;
+  height: 100vh
 }
 
 .assessmentText {
   margin: 20px;
 }
 
-.course-detail{
-   margin: 0 30vh;
+.course-detail {
+  margin: 0 30vh;
 }
 
 .grid-container {
@@ -122,4 +125,12 @@
   padding: 20px;
   font-size: 30px;
   text-align: left;
+}
+
+footer {
+  margin-top: 5%;
+  text-align: center;
+  color:white;
+  padding:11px; 
+  background: #6264A7;
 }

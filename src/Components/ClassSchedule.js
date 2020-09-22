@@ -301,81 +301,84 @@ function ClassSchedule() {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <p className="header">Schedule a class</p>
-            </header>
-            <div className="main">
-                <div className="Division">
-                    <TextField
-                        type='text'
-                        label='Enter the meeting title'
-                        variant='outlined'
-                        onChange={(event) => {
-                            setTitle(event.target.value);
-                        }}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                    />
-                </div>
-                <div className="HorizontalDivision">
-                    <div className="AnotherDivision">
-                        <p className="TextTitle">From</p>
-                        <MuiPickersUtilsProvider utils={MomentUtils}  >
-                            <DateTimePicker
-                                variant='dialog'
-                                onChange={(date) => {
-                                    setStartDate(date.toDate())
-                                }}
-                                value={startDateState}
-                                disablePast
-                                style={{ width: '15vw' }}
-                            />
-                        </MuiPickersUtilsProvider>
-                    </div>
-                    <div className="AnotherDivision">
-                        <p className="TextTitle">To</p>
-                        <MuiPickersUtilsProvider utils={MomentUtils} >
-                            <DateTimePicker
-                                variant='dialog'
-                                minDate={startDateState}
-                                value={endDate}
-                                onChange={(date) => { setEndDate(date.toDate()) }}
-                                style={{ width: '15vw', alignContent: 'center' }}
-                            />
-                        </MuiPickersUtilsProvider>
-                    </div>
-                </div>
-                <div className='Division'>
-                    <Autocomplete options={courses}
-                        getOptionLabel={(option) => option.name}
-                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                        //onInputChange={courseChanged}
-                        onChange={courseChanged}
-                        renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
+           
+                <header className="App-header">
+                    <p className="header">Schedule a class</p>
+                </header>
+                <div className="main">
 
+                    <div className="Division">
+                        <TextField
+                            type='text'
+                            label='Enter the meeting title'
+                            variant='outlined'
+                            onChange={(event) => {
+                                setTitle(event.target.value);
+                            }}
+                            style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                        />
+                    </div>
+                    <div className="HorizontalDivision">
+                        <div className="AnotherDivision">
+                            <p className="TextTitle">From</p>
+                            <MuiPickersUtilsProvider utils={MomentUtils}  >
+                                <DateTimePicker
+                                    variant='dialog'
+                                    onChange={(date) => {
+                                        setStartDate(date.toDate())
+                                    }}
+                                    value={startDateState}
+                                    disablePast
+                                    style={{ width: '15vw' }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                        <div className="AnotherDivision">
+                            <p className="TextTitle">To</p>
+                            <MuiPickersUtilsProvider utils={MomentUtils} >
+                                <DateTimePicker
+                                    variant='dialog'
+                                    minDate={startDateState}
+                                    value={endDate}
+                                    onChange={(date) => { setEndDate(date.toDate()) }}
+                                    style={{ width: '15vw', alignContent: 'center' }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                    </div>
+                    <div className='Division'>
+                        <Autocomplete options={courses}
+                            getOptionLabel={(option) => option.name}
+                            style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                            //onInputChange={courseChanged}
+                            onChange={courseChanged}
+                            renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
+
+                    </div>
+                    <div className='Division'>
+                        <Autocomplete options={units}
+                            getOptionLabel={(option) => option.display_name}
+                            style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                            onInputChange={(event, newValue) => setDourse(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
+                    </div>
+                    <div className="Division">
+                        <TextField
+                            type='text'
+                            label='Enter additional description'
+                            variant='outlined'
+                            onChange={(event) => {
+                                setDescription(event.target.value);
+                            }}
+                            style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                        />
+                    </div>
+                    <div className="HorizontalDivision">
+                        <SecondaryButton onClick={clearFields} variant='contained' color='secondary' style={{ margin: 30 }} >Cancel</SecondaryButton>
+                        <PrimaryButton onClick={addEvent} variant='contained' color='primary' style={{ margin: 30 }} >Submit</PrimaryButton>
+                    </div>
                 </div>
-                <div className='Division'>
-                    <Autocomplete options={units}
-                        getOptionLabel={(option) => option.display_name}
-                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                        onInputChange={(event, newValue) => setDourse(newValue)}
-                        renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
-                </div>
-                <div className="Division">
-                    <TextField
-                        type='text'
-                        label='Enter additional description'
-                        variant='outlined'
-                        onChange={(event) => {
-                            setDescription(event.target.value);
-                        }}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                    />
-                </div>
-                <div className="HorizontalDivision">
-                    <SecondaryButton onClick={clearFields} variant='contained' color='secondary' style={{ margin: 30 }} >Cancel</SecondaryButton>
-                    <PrimaryButton onClick={addEvent} variant='contained' color='primary' style={{ margin: 30 }} >Submit</PrimaryButton>
-                </div>
-            </div>
+        <footer> Powered By VTeamLabs Open edX</footer>
         </div>
     );
 }

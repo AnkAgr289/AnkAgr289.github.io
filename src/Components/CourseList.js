@@ -76,6 +76,7 @@ function CourseList() {
                     </section>
                 </main>
             </div>
+            <footer> Powered By VTeamLabs Open edX</footer>
         </div>
     )
 }

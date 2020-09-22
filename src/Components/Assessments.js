@@ -30,15 +30,14 @@ function Assessment() {
             <iframe title={assessementType} src={studentAssessmentLink} frameBorder="0" marginWidth="0" marginHeight="0" className="assessmentFrame" allowFullScreen> </iframe>
 
     return (
-        <div>
-            <div className="App">
-                <header className="App-header">
-                    <p className="header">Assessment</p>
-                </header>
-                <div className="main">
-                    {assessement}
-                </div>
+        <div className="App">
+            <header className="App-header">
+                <p className="header">Assessment</p>
+            </header>
+            <div className="main">
+                {assessement}
             </div>
+            <footer> Powered By VTeamLabs Open edX</footer>
         </div>
     )
 }
