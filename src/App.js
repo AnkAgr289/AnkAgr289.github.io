@@ -34,9 +34,9 @@ function App() {
         */}
       <UserDetailsContext.Provider value={{ UserNameContext, EdxTokenContext, MsAuthTokenContext }}>
         {/* <Switch>
-          <Route exact path="/login">
-            <UserAuth />
-          </Route>
+          <Route path="/login"
+              render={(props) => <UserAuth {...props} />}>
+            </Route>
           <Route exact path="/baseform">
             <ClassSchedule />
           </Route>

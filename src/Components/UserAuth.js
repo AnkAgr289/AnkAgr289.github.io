@@ -6,12 +6,23 @@ import { useHistory } from 'react-router-dom';
 import { UserDetailsContext } from '../App';
 
 const UserAuth = (props) => {
+    const searchQuery = window.location.hash;
     const [edxToken, setEdxToken] = useState('');
     const { UserNameContext, EdxTokenContext, MsAuthTokenContext } = React.useContext(UserDetailsContext);
     let history = useHistory();
-    const path = props && props.location && props.location.state &&
+
+    let path = props && props.location && props.location.state &&
         (props.location.state.path !== undefined || props.location.state.path !== null) ?
-        props.location.state.path : '/baseform'
+        props.location.state.path : '/baseform';
+
+    if(searchQuery.includes('assessment')){
+        path = '/assessment';
+    }
+    else if (searchQuery.includes('courseList'))
+        path = '/CourseList';
+    else{
+        path = '/baseform';
+    }
 
     const edxTokenGenerator = (account) => {
         return Axios.post('https://edxvteam.com/oauth2/access_token',

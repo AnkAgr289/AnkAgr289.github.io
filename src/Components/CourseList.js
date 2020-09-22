@@ -16,7 +16,7 @@ function CourseList() {
             || !EdxTokenContext.edxToken
             || EdxTokenContext.edxToken === null
             || EdxTokenContext.edxToken === undefined) {
-            history.push('/login', { path : "/CourseList" });
+            history.push('/login?CourseList', { path : "/CourseList" });
         }
     }, []);
 

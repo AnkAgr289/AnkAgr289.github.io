@@ -13,7 +13,7 @@ function Assessment() {
             || !EdxTokenContext.edxToken
             || EdxTokenContext.edxToken === null
             || EdxTokenContext.edxToken === undefined) {
-            history.push('/login', {path: '/assessment'});
+            history.push('/login?assessment', {path: '/assessment'});
         }
     }, []);
 
