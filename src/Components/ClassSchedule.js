@@ -25,7 +25,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function ClassSchedule() {
-    const [isLoading, setIsLoading] = React.useState(false);
     const [course, setCourse] = useState('');
     const [dourse, setDourse] = useState('');
     const [units, setUnits] = useState([]);
@@ -55,6 +54,10 @@ function ClassSchedule() {
             || EdxTokenContext.edxToken === null
             || EdxTokenContext.edxToken === undefined) {
             history.push('/login');
+        }
+
+        if(UserNameContext.userName !== "Laxmi"){
+            setLogin(10);
         }
 
         Axios.get(`https://edxvteam.com/api/courses/v1/courses`)
@@ -88,7 +91,6 @@ function ClassSchedule() {
     }, []);
 
     const addEvent = () => {
-        setIsLoading(true)
         const syear = startDateState.getFullYear();
         const smonth = (startDateState.getMonth() + 1).toString().padStart(2, "0");
         const sday = startDateState.getDate().toString().padStart(2, "0");
@@ -126,7 +128,6 @@ function ClassSchedule() {
             {
                 headers: { Authorization: `Bearer ${MsAuthTokenContext.msAuthToken}` }
             }).then((response) => {
-                setIsLoading(false)
                 console.log(response);
                 setJoinUrl(response.data.onlineMeeting.joinUrl);
                 setLogin(3);
@@ -245,6 +246,25 @@ function ClassSchedule() {
         </div>
         )
 
+        const navigateToEnrolledCourse = ((course) => {
+            console.log(course);
+            history.push('/courseList', { course })
+        })
+
+        if (login === 10)
+        return (<div className="App">
+            <header className="App-header">
+                <p className="header">Schedule a class</p>
+            </header>
+            <div className="main">
+                <p className="TextTitle">You are not authorized to schedule the class</p>
+                <div className="HorizontalDivision">
+                    <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' style={{ margin: 30 }} >Navigate to enrolled courses</PrimaryButton>
+                </div>
+            </div>
+        </div>
+        )
+
     const copyLink = (e) => {
         copy(joinUrl);
         setOpen(true);
@@ -301,7 +321,6 @@ function ClassSchedule() {
 
     return (
         <div className="App">
-           
                 <header className="App-header">
                     <p className="header">Schedule a class</p>
                 </header>

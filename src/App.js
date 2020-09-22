@@ -56,34 +56,41 @@ function App() {
 
         </Switch> */}
         <HashRouter basename="/">
-          {/* <div>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-          </ul>
+          <div>
+            {/* <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
+            </ul>
+            <Link
+              to={{
+                pathname: "/Course",
+                search: "?sort=name",
+                hash: "#the-hash",
+                state: { course : ...props }
+              }}
+            /> */}
 
-          <hr /> */}
 
-          <Route exact path="/login">
-            <UserAuth />
-          </Route>
-          <Route exact path="/baseform">
-            <ClassSchedule />
-          </Route>
-          <Route path="/CourseList">
-            <CourseList />
-          </Route>
-          <Route path="/Course"
-            render={(props) => <Course {...props} />}
-          >
-          </Route>
-          <Route path="/assessment">
-            <Assessment />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/baseform" />
-          </Route>
-          {/* </div> */}
+            <Route path="/login"
+              render={(props) => <UserAuth {...props} />}>
+            </Route>
+            <Route exact path="/baseform">
+              <ClassSchedule />
+            </Route>
+            <Route path="/CourseList">
+              <CourseList />
+            </Route>
+            <Route path="/Course"
+              render={(props) => <Course {...props} />}
+            >
+            </Route>
+            <Route path="/assessment">
+              <Assessment />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/baseform" />
+            </Route>
+          </div>
         </HashRouter>
       </UserDetailsContext.Provider>
     </Router>
