@@ -18,7 +18,7 @@ const UserAuth = (props) => {
     if(searchQuery.includes('assessment')){
         path = '/assessment';
     }
-    else if (searchQuery.includes('courseList'))
+    else if (searchQuery.includes('course'))
         path = '/CourseList';
     else{
         path = '/baseform';
