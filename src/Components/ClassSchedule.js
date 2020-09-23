@@ -43,6 +43,7 @@ function ClassSchedule() {
     const [open, setOpen] = useState(false);
     let linkRef = React.createRef();
     let loginRef = React.createRef();
+    const [course_id,setCourseId]=useState('');
     const [courses, setCourses] = useState(['']);
     let history = useHistory();
 
@@ -131,6 +132,21 @@ function ClassSchedule() {
                 console.log(response);
                 setJoinUrl(response.data.onlineMeeting.joinUrl);
                 setLogin(3);
+                let tempUrl=response.data.onlineMeeting.joinUrl;
+                Axios.post('https://edxvteam.com/api/discussion/v1/threads/',{
+                    course_id: course_id,
+                    raw_body: `The class for ${course} titled ${title} for ${dourse} was successfully scheduled from ${startDateState.toString()} to ${endDate.toString()} at \n ${tempUrl} \n Additional Description: ${description}`,
+                    type: "discussion",
+                    title: title,
+                    topic_id: "course"
+                  },
+                  {
+                    headers:{
+                      Authorization: `Bearer ${EdxTokenContext.edxToken}`
+                    }
+                  }).then((response)=>{
+                    console.log(response);
+                  },(error)=>{console.log(error)})
             }, (error) => {
                 console.log(error);
                 setLogin(6);
@@ -140,6 +156,7 @@ function ClassSchedule() {
     const courseChanged = (event, newValue) => {
         var unitBlocks = {};
         setCourse(newValue.name);
+        setCourseId(newValue.course_id);
 
         //parallely
         Axios.get('https://edxvteam.com/api/enrollment/v1/enrollments?' + qs.stringify({ course_id: newValue.course_id }), {

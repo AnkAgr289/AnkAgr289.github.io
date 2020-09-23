@@ -16,13 +16,13 @@ function CourseList() {
             || !EdxTokenContext.edxToken
             || EdxTokenContext.edxToken === null
             || EdxTokenContext.edxToken === undefined) {
-            history.push('/login?CourseList', { path : "/CourseList" });
+            history.push('/login?course', { path : "/CourseList" });
         }
     }, []);
 
     const navigateToCourseDetail = ((course) => {
         console.log(course);
-        history.push('/course', { course })
+        history.push(`/course?${UserNameContext.userName}/${course.id}`, { course })
     })
 
     useEffect(() => {

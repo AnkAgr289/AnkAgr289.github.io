@@ -15,6 +15,7 @@ const UserAuth = (props) => {
         (props.location.state.path !== undefined || props.location.state.path !== null) ?
         props.location.state.path : '/baseform';
 
+    // DEMO purpose code
     if(searchQuery.includes('assessment')){
         path = '/assessment';
     }
