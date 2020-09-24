@@ -26,8 +26,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ClassSchedule() {
     const [course, setCourse] = useState('');
-    const [dourse, setDourse] = useState('');
+    const [unit, setUnit] = useState('');
     const [units, setUnits] = useState([]);
+    const [topicId, setTopicId] = useState([]);
+    const [topic, setTopic] = useState([]);
+    const [topics, setTopics] = useState([]);
     const [title, setTitle] = useState('');
     const [startDateState, setStartDate] = useState(moment().toDate());
     const [endDate, setEndDate] = useState(moment().toDate())
@@ -43,7 +46,7 @@ function ClassSchedule() {
     const [open, setOpen] = useState(false);
     let linkRef = React.createRef();
     let loginRef = React.createRef();
-    const [course_id,setCourseId]=useState('');
+    const [course_id, setCourseId] = useState('');
     const [courses, setCourses] = useState(['']);
     let history = useHistory();
 
@@ -61,33 +64,34 @@ function ClassSchedule() {
             setLogin(10);
         }
 
-        Axios.get(`https://edxvteam.com/api/courses/v1/courses`)
-            .then((response) => {
-                setCourses(response.data.results);
-            }, (error) => {
-                setLogin(6);
-            })
-
-        // Axios.get(`https://edxvteam.com/api/enrollment/v1/enrollments?username=${UserNameContext.userName}`, {
-        //     headers: {
-        //         Authorization: `Bearer ${EdxTokenContext.edxToken}`
-        //     }
-        // }).then((response) => {
-        //     console.log(response.data.results)
-        //     let userEnrolledCourses = response.data.results;
-        //     let enrolledCourseId = userEnrolledCourses.map((course) => course.course_id);
-        //     let enrolledCourses = [];
-        //     enrolledCourseId.forEach((id) => {
-        //         Axios.get(`https://edxvteam.com/api/courseware/course/${id}`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${EdxTokenContext.edxToken}`
-        //             }
-        //         }).then((response) => { 
-        //             enrolledCourses.push(response.data.results)
-        //         })
+        // Axios.get(`https://edxvteam.com/api/courses/v1/courses`)
+        //     .then((response) => {
+        //         setCourses(response.data.results);
+        //     }, (error) => {
+        //         setLogin(6);
         //     })
-        //     setCourses(enrolledCourses);
-        // });
+
+        Axios.get(`https://edxvteam.com/api/enrollment/v1/enrollment`, {
+            headers: {
+                Authorization: `Bearer ${EdxTokenContext.edxToken}`
+            }
+        }).then((response) => {
+            console.log(response.data)
+            let userEnrolledCourses = response.data; // Object.assign({}, );
+            // let enrolledCourseId = userEnrolledCourses.map((course) => course.course_id);
+            // let enrolledCourses = [];
+            // enrolledCourseId.forEach((id) => {
+            //     Axios.get(`https://edxvteam.com/api/courseware/course/${id}`, {
+            //         headers: {
+            //             Authorization: `Bearer ${EdxTokenContext.edxToken}`
+            //         }
+            //     }).then((response) => { 
+            //         enrolledCourses.push(response.data.results)
+            //     })
+            // })
+
+            setCourses(userEnrolledCourses);
+        });
 
     }, []);
 
@@ -109,7 +113,7 @@ function ClassSchedule() {
                 subject: title,
                 body: {
                     contentType: "HTML",
-                    content: course + ' ' + dourse + '\n' + description
+                    content: course + ' ' + unit + '\n' + description
                 },
                 start: {
                     dateTime: `${syear}-${smonth}-${sday}T${shours}:${sminutes}:00`,
@@ -132,21 +136,21 @@ function ClassSchedule() {
                 console.log(response);
                 setJoinUrl(response.data.onlineMeeting.joinUrl);
                 setLogin(3);
-                let tempUrl=response.data.onlineMeeting.joinUrl;
-                Axios.post('https://edxvteam.com/api/discussion/v1/threads/',{
+                let tempUrl = response.data.onlineMeeting.joinUrl;
+                Axios.post('https://edxvteam.com/api/discussion/v1/threads/', {
                     course_id: course_id,
-                    raw_body: `The class for ${course} titled ${title} for ${dourse} was successfully scheduled from ${startDateState.toString()} to ${endDate.toString()} at \n ${tempUrl} \n Additional Description: ${description}`,
+                    raw_body: `[Team meeting][1] ${startDateState.toLocaleString()} - ${endDate.toLocaleTimeString()} \n\n [1]:${tempUrl}`,
                     type: "discussion",
                     title: title,
-                    topic_id: "course"
-                  },
-                  {
-                    headers:{
-                      Authorization: `Bearer ${EdxTokenContext.edxToken}`
-                    }
-                  }).then((response)=>{
-                    console.log(response);
-                  },(error)=>{console.log(error)})
+                    topic_id: topicId
+                },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${EdxTokenContext.edxToken}`
+                        }
+                    }).then((response) => {
+                        console.log(response);
+                    }, (error) => { console.log(error) })
             }, (error) => {
                 console.log(error);
                 setLogin(6);
@@ -155,11 +159,12 @@ function ClassSchedule() {
 
     const courseChanged = (event, newValue) => {
         var unitBlocks = {};
-        setCourse(newValue.name);
-        setCourseId(newValue.course_id);
+        setCourse(newValue.course_details.course_name);
+        setCourseId(newValue.course_details.course_id);
+        setUnit('');
 
         //parallely
-        Axios.get('https://edxvteam.com/api/enrollment/v1/enrollments?' + qs.stringify({ course_id: newValue.course_id }), {
+        Axios.get('https://edxvteam.com/api/enrollment/v1/enrollments?' + qs.stringify({ course_id: newValue.course_details.course_id }), {
             headers: {
                 Authorization: `Bearer ${EdxTokenContext.edxToken}`
             }
@@ -214,37 +219,57 @@ function ClassSchedule() {
             setLogin(6);
         });
         //parallely
-        Axios.get('https://edxvteam.com/api/courses/v1/blocks/?' + qs.stringify({
-            course_id: newValue.course_id,
-            depth: 'all',
-            username: UserNameContext.userName,
-            block_types_filter: 'discussion'
-        }), {
-            headers: {
-                Authorization: `Bearer ${EdxTokenContext.edxToken}`
-            }
-        }).then((response) => {
+        // [12:52 AM] Prabhanshu
 
-            if (response.data.blocks !== undefined) {
-                var units = [];
-                unitBlocks = response.data.blocks;
-                let unitBlocksArray = Object.entries(unitBlocks);
-                unitBlocksArray.forEach((unit) => {
-                    //For demo purpose only using the index  
-                    if (unit[1].display_name !== undefined && unit[1].display_name !== "") {
-                        units.push(unit[1]);
-                    }
-                })
-                setUnits(units);
-            }
-        }, (error) => {
-            setLogin(6);
-        });
+        // https://edxvteam.com/api/discussion/v1/course_topics/course-v1%3AedX%2BDemoX%2BDemo_Course
+
+        // Axios.get('https://edxvteam.com/api/courses/v1/blocks/?' + qs.stringify({
+        Axios.get('https://edxvteam.com/api/discussion/v1/course_topics/' + encodeURI(newValue.course_details.course_id)
+            //     + qs.stringify({
+            //     course_id: newValue.course_details.course_id,
+            //     depth: 'all',
+            //     username: UserNameContext.userName,
+            //     block_types_filter: 'discussion'
+            // })
+            , {
+                headers: {
+                    Authorization: `Bearer ${EdxTokenContext.edxToken}`
+                }
+            }).then((response) => {
+                setUnits(response.data.courseware_topics);
+
+
+
+                // if (response.data.blocks !== undefined) {
+                //     var units = [];
+                //     unitBlocks = response.data.blocks;
+                //     let unitBlocksArray = Object.entries(unitBlocks);
+                //     unitBlocksArray.forEach((unit) => {
+                //         //For demo purpose only using the index  
+                //         if (unit[1].display_name !== undefined && unit[1].display_name !== "") {
+                //             units.push(unit[1]);
+                //         }
+                //     })
+                //     setUnits(units);
+                // }
+            }, (error) => {
+                setLogin(6);
+            });
+    }
+
+    const unitChanged = (event, newValue) => {
+        //newValue.
+        console.log(newValue);
+        setTopics(newValue.children);
+    }
+
+    const topicChanged = (event, newValue) => {
+        setTopicId(newValue.id);
     }
 
     const clearFields = () => {
         setCourse('');
-        setDourse('');
+        setUnit('');
         setDescription('');
         setLogin(0)
     }
@@ -263,12 +288,12 @@ function ClassSchedule() {
         </div>
         )
 
-        const navigateToEnrolledCourse = ((course) => {
-            console.log(course);
-            history.push('/courseList', { course })
-        })
+    const navigateToEnrolledCourse = ((course) => {
+        console.log(course);
+        history.push('/courseList', { course })
+    })
 
-        if (login === 10)
+    if (login === 10)
         return (<div className="App">
             <header className="App-header">
                 <p className="header">Schedule a class</p>
@@ -294,11 +319,10 @@ function ClassSchedule() {
             </header>
             <div className="main">
                 <p className="TextTitle">
-                    The class for '{course}' - '{dourse}' was successfully scheduled </p>
+                    The class for '{course} - {unit} - {topic}' was successfully scheduled </p>
                 <p style={{ marginTop: 0 }}>{startDateState.toString()} to {endDate.toString()}</p>
                 <p><a ref={(ref) => linkRef = ref} id='joinlink' className="TextTitle" value={joinUrl}
                     onClick={copyLink}>Team meeting link</a></p>
-
                 <div>
                     <p className="TextTitle">Following enrolled users have been invited:</p>
                     {
@@ -338,83 +362,92 @@ function ClassSchedule() {
 
     return (
         <div className="App">
-                <header className="App-header">
-                    <p className="header">Schedule a class</p>
-                </header>
-                <div className="main">
+            <header className="App-header">
+                <p className="header">Schedule a class</p>
+            </header>
+            <div className="main">
 
-                    <div className="Division">
-                        <TextField
-                            type='text'
-                            label='Enter the meeting title'
-                            variant='outlined'
-                            onChange={(event) => {
-                                setTitle(event.target.value);
-                            }}
-                            style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                        />
+                <div className="Division">
+                    <TextField
+                        type='text'
+                        label='Enter the meeting title'
+                        variant='outlined'
+                        onChange={(event) => {
+                            setTitle(event.target.value);
+                        }}
+                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                    />
+                </div>
+                <div className="HorizontalDivision">
+                    <div className="AnotherDivision">
+                        <p className="TextTitle">From</p>
+                        <MuiPickersUtilsProvider utils={MomentUtils}  >
+                            <DateTimePicker
+                                variant='dialog'
+                                onChange={(date) => {
+                                    setStartDate(date.toDate())
+                                }}
+                                value={startDateState}
+                                disablePast
+                                style={{ width: '15vw' }}
+                            />
+                        </MuiPickersUtilsProvider>
                     </div>
-                    <div className="HorizontalDivision">
-                        <div className="AnotherDivision">
-                            <p className="TextTitle">From</p>
-                            <MuiPickersUtilsProvider utils={MomentUtils}  >
-                                <DateTimePicker
-                                    variant='dialog'
-                                    onChange={(date) => {
-                                        setStartDate(date.toDate())
-                                    }}
-                                    value={startDateState}
-                                    disablePast
-                                    style={{ width: '15vw' }}
-                                />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                        <div className="AnotherDivision">
-                            <p className="TextTitle">To</p>
-                            <MuiPickersUtilsProvider utils={MomentUtils} >
-                                <DateTimePicker
-                                    variant='dialog'
-                                    minDate={startDateState}
-                                    value={endDate}
-                                    onChange={(date) => { setEndDate(date.toDate()) }}
-                                    style={{ width: '15vw', alignContent: 'center' }}
-                                />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                    </div>
-                    <div className='Division'>
-                        <Autocomplete options={courses}
-                            getOptionLabel={(option) => option.name}
-                            style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                            //onInputChange={courseChanged}
-                            onChange={courseChanged}
-                            renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
-
-                    </div>
-                    <div className='Division'>
-                        <Autocomplete options={units}
-                            getOptionLabel={(option) => option.display_name}
-                            style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                            onInputChange={(event, newValue) => setDourse(newValue)}
-                            renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
-                    </div>
-                    <div className="Division">
-                        <TextField
-                            type='text'
-                            label='Enter additional description'
-                            variant='outlined'
-                            onChange={(event) => {
-                                setDescription(event.target.value);
-                            }}
-                            style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                        />
-                    </div>
-                    <div className="HorizontalDivision">
-                        <SecondaryButton onClick={clearFields} variant='contained' color='secondary' style={{ margin: 30 }} >Cancel</SecondaryButton>
-                        <PrimaryButton onClick={addEvent} variant='contained' color='primary' style={{ margin: 30 }} >Submit</PrimaryButton>
+                    <div className="AnotherDivision">
+                        <p className="TextTitle">To</p>
+                        <MuiPickersUtilsProvider utils={MomentUtils} >
+                            <DateTimePicker
+                                variant='dialog'
+                                minDate={startDateState}
+                                value={endDate}
+                                onChange={(date) => { setEndDate(date.toDate()) }}
+                                style={{ width: '15vw', alignContent: 'center' }}
+                            />
+                        </MuiPickersUtilsProvider>
                     </div>
                 </div>
-        <footer> Powered By VTeamLabs Open edX</footer>
+                <div className='Division'>
+                    <Autocomplete options={courses}
+                        getOptionLabel={(option) => option.course_details.course_name}
+                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                        //onInputChange={courseChanged}
+                        onChange={courseChanged}
+                        renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
+
+                </div>
+                <div className='Division'>
+                    <Autocomplete options={units}
+                        getOptionLabel={(option) => option.name}
+                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                        onChange={unitChanged}
+                        onInputChange={(event, newValue) => setUnit(newValue)}
+                        renderInput={(params) => <TextField {...params} label="Select course section" variant="outlined" />} />
+                </div>
+                <div className='Division'>
+                    <Autocomplete options={topics}
+                        getOptionLabel={(option) => option.name}
+                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                        onChange={topicChanged}
+                        onInputChange={(event, newValue) => setTopic(newValue)}
+                        renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
+                </div>
+                <div className="Division">
+                    <TextField
+                        type='text'
+                        label='Enter additional description'
+                        variant='outlined'
+                        onChange={(event) => {
+                            setDescription(event.target.value);
+                        }}
+                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                    />
+                </div>
+                <div className="HorizontalDivision">
+                    <SecondaryButton onClick={clearFields} variant='contained' color='secondary' style={{ margin: 30 }} >Cancel</SecondaryButton>
+                    <PrimaryButton onClick={addEvent} variant='contained' color='primary' style={{ margin: 30 }} >Submit</PrimaryButton>
+                </div>
+            </div>
+            <footer> Powered By VTeamLabs Open edX</footer>
         </div>
     );
 }

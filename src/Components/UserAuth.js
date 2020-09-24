@@ -16,25 +16,46 @@ const UserAuth = (props) => {
         props.location.state.path : '/baseform';
 
     // DEMO purpose code
-    if(searchQuery.includes('assessment')){
+    if (searchQuery.includes('assessment')) {
         path = '/assessment';
     }
     else if (searchQuery.includes('course'))
         path = '/CourseList';
-    else{
+    else {
         path = '/baseform';
     }
 
     const edxTokenGenerator = (account) => {
+        let userName = ""
+        let password = ""
+        if (account.userName === "Laxmi@vteamlabs.com") {
+            userName ="Laxmi"
+            UserNameContext.setUserName(userName);
+            password = "Vteam1234"
+        }
+        else if (account.userName === "Cristina@vteamlabs.com" ) {
+            userName = "CristinaStudent"
+            UserNameContext.setUserName(userName);
+            password = "Team@123"
+        }
+        else if(account.userName === "Jonas@vteamlabs.com"){
+            userName = "Jonas"
+            UserNameContext.setUserName(userName);
+            password = "Team@123"
+        } else {
+
+        }
+    
+
         return Axios.post('https://edxvteam.com/oauth2/access_token',
-            qs.stringify(
-                {
-                    grant_type: "client_credentials",
-                    client_id: "8vD6pKAbjTfgdEtNAKqdUwu0X6Ps574kyBh94Om0",
-                    client_secret: "ERRuuGZPMsEy8hjBHjFaMZsmDR3SRhXndOjgoiqEseor1p18kktkHSdUExFNFoKlTdWrmrtz2Oc0NyVa9fNASLuckPPRJY0uCXwkg7yEbRfUg8e0rfGetaGt7tuqUqRo",
-                    token_type: "Bearer"
-                }
-            ),
+            qs.stringify({
+                grant_type: "password",
+                client_id: "eSIp6KMW0CIMEDrjwDSJ3IhL5zcujcNF0aFoE0YY",
+                client_secret: "vTUI81eTQbD8Vt7ZM7fVNEgH1VL5r4sEVqy76cwXrdEaI49D8IMpRy4HgJhbJhQA2AbPRhwwvxHvsVWRfTJZnoIgacBp1870ZvdqSm5yqDD8eXb8JTuUfDoy3fh1AlK4",
+                token_type: "Bearer",
+                username: userName,
+                password: password
+            }),
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -44,29 +65,30 @@ const UserAuth = (props) => {
                 setEdxToken(response.data.access_token);
                 console.log(EdxTokenContext.edxToken);
                 console.log(edxToken);
-                Axios.get('https://edxvteam.com/api/user/v1/accounts?email=' + account.userName,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${response.data.access_token}`
-                        }
-                    })
-                    .then((response) => {
-                        let edxUser = response.data[0];
+                history.push(path);
+                // Axios.get('https://edxvteam.com/api/user/v1/accounts',
+                //     {
+                //         headers: {
+                //             Authorization: `Bearer ${response.data.access_token}`
+                //         }
+                //     })
+                //     .then((response) => {
+                //         let edxUser = response.data[0];
 
-                        if (account.userName === "Cristina@vteamlabs.com") {
-                            UserNameContext.setUserName("Cristina");
-                        }
-                        else if (account.userName === "Jones@vteamlabs.com") {
-                            UserNameContext.setUserName("Jones");
-                        }
-                        else {
-                            UserNameContext.setUserName(edxUser.username);
-                        }
-                        console.log(UserNameContext.userName)
-                        history.push(path)
-                    }, (error) => {
-                        console.log(error)
-                    })
+                //         if (account.userName === "Cristina@vteamlabs.com") {
+                //             UserNameContext.setUserName("Cristina");
+                //         }
+                //         else if (account.userName === "Jones@vteamlabs.com") {
+                //             UserNameContext.setUserName("Jones");
+                //         }
+                //         else {
+                //             UserNameContext.setUserName(edxUser.username);
+                //         }
+                //         console.log(UserNameContext.userName)
+                //         history.push(path)
+                //     }, (error) => {
+                //         console.log(error)
+                //     })
             }, (error) => {
                 console.log(error)
             })
