@@ -6,8 +6,6 @@ import { Autocomplete } from '@material-ui/lab'
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import { TextField } from '@material-ui/core';
-import MicrosoftLogin from 'react-microsoft-login';
-import * as qs from 'querystring';
 import { SecondaryButton, PrimaryButton } from 'msteams-ui-components-react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,6 +17,7 @@ import Slide from '@material-ui/core/Slide';
 import copy from 'copy-to-clipboard';
 import { UserDetailsContext } from '../App';
 import { useHistory } from 'react-router-dom';
+import * as qs from 'querystring';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -34,10 +33,7 @@ function ClassSchedule() {
     const [title, setTitle] = useState('');
     const [startDateState, setStartDate] = useState(moment().toDate());
     const [endDate, setEndDate] = useState(moment().toDate())
-    const [token, setToken] = useState('');
-    const [account, setAccount] = useState({});
     const [login, setLogin] = useState(0);
-    const [edxToken, setEdxToken] = useState('');
     const { UserNameContext, EdxTokenContext, MsAuthTokenContext } = React.useContext(UserDetailsContext);
     const [user, setUser] = useState({});
     const [userEmails, setUserEmails] = useState([0]);
@@ -219,47 +215,20 @@ function ClassSchedule() {
             setLogin(6);
         });
         //parallely
-        // [12:52 AM] Prabhanshu
-
-        // https://edxvteam.com/api/discussion/v1/course_topics/course-v1%3AedX%2BDemoX%2BDemo_Course
-
-        // Axios.get('https://edxvteam.com/api/courses/v1/blocks/?' + qs.stringify({
-        Axios.get('https://edxvteam.com/api/discussion/v1/course_topics/' + encodeURI(newValue.course_details.course_id)
-            //     + qs.stringify({
-            //     course_id: newValue.course_details.course_id,
-            //     depth: 'all',
-            //     username: UserNameContext.userName,
-            //     block_types_filter: 'discussion'
-            // })
-            , {
+       Axios.get('https://edxvteam.com/api/discussion/v1/course_topics/' + encodeURI(newValue.course_details.course_id)
+        , {
                 headers: {
                     Authorization: `Bearer ${EdxTokenContext.edxToken}`
                 }
             }).then((response) => {
                 setUnits(response.data.courseware_topics);
 
-
-
-                // if (response.data.blocks !== undefined) {
-                //     var units = [];
-                //     unitBlocks = response.data.blocks;
-                //     let unitBlocksArray = Object.entries(unitBlocks);
-                //     unitBlocksArray.forEach((unit) => {
-                //         //For demo purpose only using the index  
-                //         if (unit[1].display_name !== undefined && unit[1].display_name !== "") {
-                //             units.push(unit[1]);
-                //         }
-                //     })
-                //     setUnits(units);
-                // }
-            }, (error) => {
+  }, (error) => {
                 setLogin(6);
             });
     }
 
     const unitChanged = (event, newValue) => {
-        //newValue.
-        console.log(newValue);
         setTopics(newValue.children);
     }
 

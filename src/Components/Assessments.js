@@ -18,9 +18,7 @@ function Assessment() {
     }, []);
 
     const isStaff = UserNameContext.userName === "Laxmi" ? true : false; // TODO - EDX API
-    console.log(UserNameContext.userName)
     const assessementType = UserNameContext.userName === "Cristina" ? 'Demo' : 'AI';
-    console.log(assessementType)
     let noAssessment = false;
     // NOTE - Hardcoded links for Demo Perspective
     const studentAssessmentLink = assessementType === 'Demo' ? 'https://forms.office.com/Pages/ResponsePage.aspx?id=ULWMLnqAXE6BzmsGdAtt_v8yq2Ma9E5FhW7OrIb03ElUM1pBU0tPQzE3UDgwT1NKSFg3NTNTNEk4WC4u&embed=true'
