@@ -49,7 +49,7 @@ function Assessment() {
             <iframe title={assessementType} src={studentAssessmentLink} frameBorder="0" marginWidth="0" marginHeight="0" className="assessmentFrame" allowFullScreen> </iframe>
 
     return (
-            <div className="App">
+            <div>
             <div class="main-content">
 
 
@@ -58,7 +58,38 @@ function Assessment() {
 
         <h3 class="heading-strip"> Assessment</h3>
         <div class="class-form">
-        {assessement}
+            {isStaff ? <div class="box-1"><ul><li>
+
+                <div class="box-detail">
+                    <div class="box-detail-top">
+                        <figure>
+                            <img src='images/card-image.jpg'  />
+                        </figure>
+                         </div>
+                    <div class="box-detail-bottom">
+                        <span class="space"></span>
+                        <p class="name"  ><p>UniversityD AI101 </p>Introduction to Artificial Intelligence</p>
+                    </div>
+                    <a onClick={() => redirectToFormsView("AI")} class="button">View Assessment  <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                </div>
+            </li><li>
+
+<div class="box-detail">
+    <div class="box-detail-top">
+        <figure>
+            <img style={{height:'145px'}} src='images/info-right.jpg'  />
+        </figure>
+         </div>
+    <div class="box-detail-bottom">
+        <span class="space"></span>
+        <p class="name" ><p>edX: DemoX </p>Demonstration Course
+</p>
+    </div>
+    <a onClick={() => redirectToFormsView("Demo")} class="button">View Assessment  <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+</div>
+</li></ul></div>
+        : studentAssessmentLink === "No assessment" ? <p className="assessmentText">{"No assessment"}</p> :
+        <iframe title={assessementType} src={studentAssessmentLink} frameBorder="0" marginWidth="0" marginHeight="0" className="assessmentFrame" allowFullScreen> </iframe>}
         </div>
             {/* <footer> Powered By VTeamLabs Open edX</footer> */}
         </div></div></div></div>

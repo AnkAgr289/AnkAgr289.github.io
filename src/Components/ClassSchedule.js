@@ -244,16 +244,26 @@ function ClassSchedule() {
     }
 
     if (login === 6)
-        return (<div className="App">
-            <header className="App-header">
-                <p className="header">Error</p>
-            </header>
-            <div className="main">
+        return (<div className="main-content">
+
+
+        <div className="content-part">
+            <div className="container-fluid">
+        
+                <h3 className="heading-strip"> Schedule a Class</h3>
+                <div className="class-form">
+                    <form>
+                        <div className="form-group">
                 <p className="TextTitle">A network error occured, try again</p>
+                </div>
                 <div className="HorizontalDivision">
                     <PrimaryButton onClick={clearFields} variant='contained' color='primary' style={{ margin: 30 }} >Try Again</PrimaryButton>
-                </div>
+                    </div>
+                    </form>
+                    </div> 
             </div>
+        </div>
+        {/* <footer> Powered By VTeamLabs Open edX</footer> */}
         </div>
         )
 
@@ -289,7 +299,7 @@ function ClassSchedule() {
                         <div className="form-group">
                         You are not authorized to schedule the class
                         </div>
-                        <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' style={{ margin: 30 }} >Navigate to enrolled courses</PrimaryButton>
+                        <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' className="btn btn-default primary-button" >Navigate to enrolled courses</PrimaryButton>
         
                     </form>
                 </div>
@@ -379,7 +389,7 @@ function ClassSchedule() {
                 }
             </div>
             <div className="HorizontalDivision">
-                <PrimaryButton onClick={clearFields} variant='contained' color='primary' style={{ margin: 30 }} >Schedule another Class</PrimaryButton>
+                <PrimaryButton onClick={clearFields}  variant='contained' color='primary' className="btn btn-default primary-button" style={{ margin: 30, width: '400px' }} >Schedule another Class</PrimaryButton>
             </div>
     </div>
 </div>

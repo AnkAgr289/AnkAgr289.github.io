@@ -6,6 +6,7 @@ import { UserDetailsContext } from '../App';
 
 function CourseList() {
     const [courses, setCourses] = useState([]);
+    const [isStaff, setIsStaff] = useState(false);
     const { UserNameContext, EdxTokenContext } = React.useContext(UserDetailsContext);
     console.log(UserNameContext.userName)
     let history = useHistory();
@@ -44,6 +45,10 @@ function CourseList() {
         //         let arr = [{"blocks_url": "https://edxvteam.com/api/courses/v1/blocks/?course_id=course-v1%3AUniversityD%2BAI101%2B2020_T1", "effort": "04:00", "end": "2020-09-30T23:30:00Z", "enrollment_start": "2020-08-15T00:00:00Z", "enrollment_end": "2020-09-15T23:30:00Z", "id": "course-v1:UniversityD+AI101+2020_T1", "media": { "course_image": { "uri": "/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg" }, "course_video": { "uri": null }, "image": { "raw": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg", "small": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg", "large": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg" } }, "name": "Introduction to Artificial Intelligence", "number": "AI101", "org": "UniversityD", "short_description": "Short Description of the course on Artificial Intelligence from UniversityD", "start": "2020-09-01T00:00:00Z", "start_display": "Sept. 1, 2020", "start_type": "timestamp", "pacing": "instructor", "mobile_available": false, "hidden": false, "invitation_only": false, "course_id": "course-v1:UniversityD+AI101+2020_T1"}];
         //         setCourses(arr);
         //     }
+
+        if(UserNameContext.userName === "Laxmi"){
+            setIsStaff(true);
+        }
 
         Axios.get(`https://edxvteam.com/api/enrollment/v1/enrollment`, {
             headers: {
@@ -103,7 +108,7 @@ function CourseList() {
             <div class="main-content">
                 <div class="content-part">
                     <div class="container-fluid">
-                        <h3 class="heading-strip"> Enrolled Courses</h3>
+    <h3 class="heading-strip"> Enrolled Courses {isStaff && `(Instructor)`}</h3>
                         <div class="box-1">
                             <ul>{course}</ul>
                         </div>

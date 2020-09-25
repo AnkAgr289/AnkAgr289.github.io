@@ -22,6 +22,8 @@ const Course = ((props) => {
 
     const [course, setCourse] = useState([]);
     const [view, setView] = useState('');
+    const [isStaff, setIsStaff] = useState(false);
+
     const [open, setOpen] = useState(false);
     const [isRecordingLink, setIsRecordingLink] = useState(false);
     const [meetDetail, setMeetDetail] = useState([]);
@@ -35,13 +37,13 @@ const Course = ((props) => {
     //     { "blocks_url": "https://edxvteam.com/api/courses/v1/blocks/?course_id=course-v1%3AUniversityD%2BAI101%2B2020_T1", "effort": "04:00", "end": "2020-09-30T23:30:00Z", "enrollment_start": "2020-08-15T00:00:00Z", "enrollment_end": "2020-09-15T23:30:00Z", "id": "course-v1:UniversityD+AI101+2020_T1", "media": { "course_image": { "uri": "/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg" }, "course_video": { "uri": null }, "image": { "raw": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg", "small": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg", "large": "https://edxvteam.com/asset-v1:UniversityD+AI101+2020_T1+type@asset+block@11276.jpg" } }, "name": "Introduction to Artificial Intelligence", "number": "AI101", "org": "UniversityD", "short_description": "Short Description of the course on Artificial Intelligence from UniversityD", "start": "2020-09-01T00:00:00Z", "start_display": "Sept. 1, 2020", "start_type": "timestamp", "pacing": "instructor", "mobile_available": false, "hidden": false, "invitation_only": false, "course_id": "course-v1:UniversityD+AI101+2020_T1" };
     // const [courses, setCourses] = useState([]);
     const [msStreamLink, setMsStreamLink] = useState('');
-    let isStaff = false; // TODO - User data to tell
+    // let isStaff = false; // TODO - User data to tell
     let history = useHistory();
 
     // DEMO purpose code
-    if (UserNameContext.userName === 'Laxmi') {
-        isStaff = true;
-    }
+    // if (UserNameContext.userName === 'Laxmi') {
+    //     isStaff = true;
+    // }
 
     const courseId = searchQuery.split('?')[1];
 
@@ -54,6 +56,11 @@ const Course = ((props) => {
 
 
     useEffect(() => {
+
+        if(UserNameContext.userName === "Laxmi"){
+            setIsStaff(true);
+        }
+
         Axios.get(`https://edxvteam.com/api/courses/v1/courses/${courseId}`)
             .then((response) => {
                 let courses = response.data;
@@ -121,7 +128,7 @@ const Course = ((props) => {
             <div className="main-content">
                 <div className="content-part">
                     <div className="container-fluid">
-                        <h3 className="heading-strip"> Course Detail</h3>
+                        <h3 className="heading-strip"> Course Detail {isStaff && `(Instructor)`}</h3>
                         <div className="course-info-content">
                             <div className="course-header">
                                 <div className="course-header-left">
@@ -199,7 +206,8 @@ marketing, and testing. </p>
                                                 style={{ backgroundColor: 'rgba(255,255,255,0.9)', width: '400px', marginTop: '28px', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
                                             />
                                             : '')}
-                                            {isStaff && !isRecordingLink && <PrimaryButton onClick={postStream} variant='contained' color='primary' style={{ margin: 30 }} >Post recording link</PrimaryButton>}
+                                            {isStaff && !isRecordingLink && 
+                                            <PrimaryButton className="btn btn-default primary-button" onClick={postStream} variant='contained' color='primary' style={{ margin: 30 }} >Post recording link</PrimaryButton>}
 
                                     </div>
                                     <h4>What you'll learn </h4>
@@ -267,14 +275,14 @@ marketing, and testing. </p>
                                 <div className="course-bottom-right">
                                     <ul className="list-group">
                                         <li>
-                                            <p><img src="images/ico_institute.jpg" />Meeting <span dangerouslySetInnerHTML={{ __html: meetDetail !== "No meeting scheduled" ? meetDetail.rendered_body : meetDetail }} /> </p>
+                                            <p><img src="images/ico_institute.jpg" />Meeting <span style={{marginTop:'-10px'}} dangerouslySetInnerHTML={{ __html: meetDetail !== "No meeting scheduled" ? meetDetail.rendered_body : meetDetail }} /> </p>
                                         </li>
 
                                         <li>
                                             <p><img src="images/ico_subject.jpg" />
                                             Recorded
-                                            <span>{isRecordingLink ?
-                                                    <span dangerouslySetInnerHTML={{ __html: recordDetail !== "No meeting scheduled" ? recordDetail.rendered_body : meetDetail }} /> : "-"}</span> </p>
+                                            {isRecordingLink ?
+                                                    <span style={{marginTop:'-10px'}} dangerouslySetInnerHTML={{ __html: recordDetail !== "No meeting scheduled" ? recordDetail.rendered_body : meetDetail }} /> : <span>-</span>} </p>
                                         </li>
 
                                         <li>
@@ -312,14 +320,14 @@ marketing, and testing. </p>
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle id="alert-dialog-slide-title">Post is successfull</DialogTitle>
+                <DialogTitle style={{color:'rgb(169,39,109)'}} id="alert-dialog-slide-title">Recording link saved</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        Recording is posted in the comments
+                        Recording is posted in the comments for the course.
           </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} color="primary">
+                    <Button className="btn btn-default primary-button" onClick={() => setOpen(false)} color="primary">
                         Okay
           </Button>
                 </DialogActions>
