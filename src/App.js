@@ -12,6 +12,12 @@ import CourseList from './Components/CourseList';
 import Course from './Components/Course';
 import Assessment from './Components/Assessments';
 import UserAuth from './Components/UserAuth';
+// import 'fonts/fonts.scss';
+// import 'common/css/common.scss';
+import './font-awesome.css';
+// import 'common/css/style.css';
+// import 'common/css/bootstrap.min.css';
+// import 'common/css/icons.css';
 
 export const UserDetailsContext = React.createContext(null);
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../Course.css';
 import { TextField } from '@material-ui/core';
 import { SecondaryButton, PrimaryButton } from 'msteams-ui-components-react';
 import * as qs from 'querystring';
@@ -20,7 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Course = ((props) => {
     console.log(props);
-    
+
     const [course, setCourse] = useState([]);
     const [view, setView] = useState('');
     const [open, setOpen] = useState(false);
@@ -119,39 +118,21 @@ const Course = ((props) => {
 
     return (
         <div>
-            <div className="content-wrapper main-container" id="content" dir="ltr">
-                <main id="main" aria-label="Content">
-                    <section className="find-courses">
-                        <section className="courses-container">
-                            <header className="App-header">
-                                <p className="header">Course Detail</p>
-                            </header>
-                            <div className="courses no-course-discovery" role="region" aria-label="List of Courses">
-                                <div className="grid-container">
-                                    <div className="grid-item">Course organization</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item">{course.org}</div>
-                                    <div className="grid-item">Course code</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item">{course.number}</div>
-                                    <div className="grid-item">Course title</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item"><a href={`https://edxvteam.com/courses/${course.course_id}/about`}>{course.name}</a></div>
-                                    <div className="grid-item">Meeting title</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item">{meetDetail !== "No meeting scheduled" ? meetDetail.title : meetDetail}</div>
-                                    <div className="grid-item">Instructor</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item">{meetDetail !== "No meeting scheduled" ? meetDetail.author : meetDetail}</div>
-                                    <div className="grid-item">Scheduled meet</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item"><p dangerouslySetInnerHTML={{ __html: meetDetail !== "No meeting scheduled" ? meetDetail.rendered_body : meetDetail }} /></div>
-                                    <div className="grid-item">Recorded</div>
-                                    <div className="grid-item"> - </div>
-                                    <div className="grid-item">{isRecordingLink ?
-                                        <p dangerouslySetInnerHTML={{ __html: recordDetail !== "No meeting scheduled" ? recordDetail.rendered_body : meetDetail }} />
-                                        :
-                                        (isStaff ?
+            <div className="main-content">
+                <div className="content-part">
+                    <div className="container-fluid">
+                        <h3 className="heading-strip"> Course Detail</h3>
+                        <div className="course-info-content">
+                            <div className="course-header">
+                                <div className="course-header-left">
+                                    <h3>{course.name} </h3>
+                                    <p>Understand how the FDA regulates pharmaceuticals and explore debates on prescription drug costs,
+marketing, and testing. </p>
+                                </div>
+                                <div className="course-header-right">
+                                <img src="images/info-right.jpg"/>
+
+                                {/* {isStaff && !isRecordingLink  ?
                                             <TextField
                                                 color="white"
                                                 type='text'
@@ -161,25 +142,169 @@ const Course = ((props) => {
                                                 }}
                                                 inputStyle={{ color: 'white', padding: '0px' }}
                                                 style={{ backgroundColor: 'rgba(255,255,255,0.9)', width: '400px', marginTop: '-15px', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                                            />
-                                            : 'Not Available')}
-                                    </div>
+                                            />: ""} */}
+                                    {/* <img src={course.media.image.small} alt={course.name} /> */}
+                                {/* <a onClick={backToCourseList}>Back to enrolled courses</a> */}
                                 </div>
+                            </div>
+                            <div className="course-middle">
+                                <ul>
+                                    <li>
+                                        <p><img src="images/ico_time.jpg" />
+                                            Length: <strong>8 Weeks </strong>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><img src="images/ico_meter.jpg" />
+                                                Effort: <strong>2-5 Hours per week </strong>
+                                        </p>
+                                    </li>
 
-                                <div className="HorizontalDivision">
-                                    <SecondaryButton onClick={backToCourseList} variant='contained' color='secondary' style={{ margin: 30 }} >Back</SecondaryButton>
+                                    <li>
+                                        <p><img src="images/ico_level.jpg" />
+                                                    Level: <strong>Beginner </strong>
+                                        </p>
+                                    </li>
 
-                                    {isStaff && !isRecordingLink && <PrimaryButton onClick={postStream} variant='contained' color='primary' style={{ margin: 30 }} >Post</PrimaryButton>
-                                    }
+                                    <li>
+                                        <p><img src="images/ico_price.jpg" />
+                                            <strong>Enrolled</strong>
+                                        </p>
+                                    </li>
 
-                                </div>
+                                </ul>
+
 
                             </div>
-                        </section>
-                    </section>
-                </main>
+
+                            <div class="course-bottom">
+                                <div class="course-bottom-left">
+                                    <h4>About this course </h4>
+                                    <p>Prescription drugs are among the most common health care interventions and have turnedsome once-fatal diseases into manageable conditions — but they have also been a growing source of controversy. Patients in the US struggle with increasing costs and express concerns about whymany conditions,such as Alzheimer’s disease, remain without adequate therapeutic options. </p>
+
+                                    <p>At the center of these debates lies the US Food and Drug Administration (FDA), a federal agency responsible for monitoring the prescription drug marketplace and enforcing basic rules and laws that affect how prescription drugs are discovered, developed, and sold. </p>
+
+                                    <p>This course investigates the major issues affecting the regulatory approval and evidence-based use of prescription drugs. You willlearn the rules and regulationsg  </p>
+                                    
+                                    <div className="grid-item">{
+                                        (isStaff && !isRecordingLink ?
+                                            <TextField
+                                                color="white"
+                                                type='text'
+                                                variant='outlined'
+                                                onChange={(event) => {
+                                                    setMsStreamLink(event.target.value);
+                                                }}
+                                                inputStyle={{ color: 'white', padding: '0px' }}
+                                                style={{ backgroundColor: 'rgba(255,255,255,0.9)', width: '400px', marginTop: '28px', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                                            />
+                                            : '')}
+                                            {isStaff && !isRecordingLink && <PrimaryButton onClick={postStream} variant='contained' color='primary' style={{ margin: 30 }} >Post recording link</PrimaryButton>}
+
+                                    </div>
+                                    <h4>What you'll learn </h4>
+                                    <ul>
+                                        <li>Key controversies over how prescription drugs are developed and marketed, and why those controversies exist </li>
+                                        <li> The FDA — its history, public health role, and rules affecting prescription drugs in the US </li>
+                                        <li> The process of discovering, testing, and approving innovative drugs, including various perspectives on the criteria used for drug approval </li>
+                                        <li> The cost of prescription drugs, including the factors affecting a drug’s market exclusivity period and the availability and use of affordable generic drugs </li>
+                                        <li>Safety evaluation of prescription drugs using “real world” data </li>
+                                        <li> Current topics stirring debate over the scope of FDA regulation, such as dietary supplements, special classes of prescription drugs, and “right to try” lawsthat allow patients to obtain drugs prior to FDA </li>
+                                    </ul>
+                                    <a href="#" className="more-button"><img src="images/more-icon.jpg" />More </a>
+
+                                    <h4>Syllabus </h4>
+                                    <ul>
+                                        <li> <strong>Module 1:</strong> Overview and history of the FDA </li>
+                                        <li><strong>Module 2: </strong> Drug development and approval </li>
+                                        <li><strong> Module 3: </strong> Drug pricing in the United States </li>
+                                        <li><strong>Module 4: </strong>Marketing strategies </li>
+                                        <li><strong>Module 5: </strong> Post-approval evaluation  </li>
+                                        <li><strong> Module 6: </strong> Emerging medical technologies </li>
+                                    </ul>
+                                    <a href="#" className="more-button"><img src="images/more-icon.jpg" />More </a>
+                                    <h4>Meet your instructors </h4>
+                                    <ul className="meet-ul">
+                                        <li><div className="meet-img"><img src="images/default_avatarpic.png" /></div>
+                                            <div className="meet-text"> <a href="#">Aaron Kesselheim </a>
+                                                <p>Professor of Medicine, Director of the Program On Regulation, Therapeutics, And Law, Brigham and Women's Hospital </p>
+                                                <span>Harvard University </span>
+
+                                            </div>
+
+                                        </li>
+
+                                        <li><div className="meet-img"><img src="images/default_avatarpic.png" /></div>
+                                            <div className="meet-text"> <a href="#">Aaron Kesselheim </a>
+                                                <p>Professor of Medicine, Director of the Program On Regulation, Therapeutics, And Law, Brigham and Women's Hospital </p>
+                                                <span>Harvard University </span>
+
+                                            </div>
+
+                                        </li>
+
+                                        <li><div className="meet-img"><img src="images/default_avatarpic.png" /></div>
+                                            <div className="meet-text"> <a href="#">Aaron Kesselheim </a>
+                                                <p>Professor of Medicine, Director of the Program On Regulation, Therapeutics, And Law, Brigham and Women's Hospital </p>
+                                                <span>Harvard University </span>
+
+                                            </div>
+
+                                        </li>
+
+                                        <li><div className="meet-img"><img src="images/default_avatarpic.png" /></div>
+                                            <div className="meet-text"> <a href="#">Aaron Kesselheim </a>
+                                                <p>Professor of Medicine, Director of the Program On Regulation, Therapeutics, And Law, Brigham and Women's Hospital </p>
+                                                <span>Harvard University </span>
+
+                                            </div>
+
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                                <div className="course-bottom-right">
+                                    <ul className="list-group">
+                                        <li>
+                                            <p><img src="images/ico_institute.jpg" />Meeting <span dangerouslySetInnerHTML={{ __html: meetDetail !== "No meeting scheduled" ? meetDetail.rendered_body : meetDetail }} /> </p>
+                                        </li>
+
+                                        <li>
+                                            <p><img src="images/ico_subject.jpg" />
+                                            Recorded
+                                            <span>{isRecordingLink ?
+                                                    <span dangerouslySetInnerHTML={{ __html: recordDetail !== "No meeting scheduled" ? recordDetail.rendered_body : meetDetail }} /> : "-"}</span> </p>
+                                        </li>
+
+                                        <li>
+                                            <p><img src="images/ico_institute.jpg" />Language:<span>English</span> </p>
+                                        </li>
+
+                                        <li>
+                                            <p><img src="images/ico_institute.jpg" />Video Transcript:<span>English</span> </p>
+                                        </li>
+
+                                        <li>
+                                            <p><img src="images/ico_video.jpg" />Course Type:<span>Self-paced on your time</span> </p>
+                                        </li>
+                                    </ul>
+
+                                    <h4>Share this course </h4>
+                                    <img src="images/ico_share.jpg" />
+
+                                    <h4>Prerequisites </h4>
+                                    <p>None </p>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <footer> Powered By VTeamLabs Open edX</footer>
+            {/* <footer> Powered By VTeamLabs Open edX</footer> */}
             <Dialog
                 open={open}
                 TransitionComponent={Transition}

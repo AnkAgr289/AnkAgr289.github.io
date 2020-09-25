@@ -56,7 +56,7 @@ function ClassSchedule() {
             history.push('/login');
         }
 
-        if(UserNameContext.userName !== "Laxmi"){
+        if (UserNameContext.userName !== "Laxmi") {
             setLogin(10);
         }
 
@@ -215,15 +215,15 @@ function ClassSchedule() {
             setLogin(6);
         });
         //parallely
-       Axios.get('https://edxvteam.com/api/discussion/v1/course_topics/' + encodeURI(newValue.course_details.course_id)
-        , {
+        Axios.get('https://edxvteam.com/api/discussion/v1/course_topics/' + encodeURI(newValue.course_details.course_id)
+            , {
                 headers: {
                     Authorization: `Bearer ${EdxTokenContext.edxToken}`
                 }
             }).then((response) => {
                 setUnits(response.data.courseware_topics);
 
-  }, (error) => {
+            }, (error) => {
                 setLogin(6);
             });
     }
@@ -262,161 +262,247 @@ function ClassSchedule() {
         history.push('/courseList', { course })
     })
 
-    if (login === 10)
-        return (<div className="App">
-            <header className="App-header">
-                <p className="header">Schedule a class</p>
-            </header>
-            <div className="main">
-                <p className="TextTitle">You are not authorized to schedule the class</p>
-                <div className="HorizontalDivision">
-                    <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' style={{ margin: 30 }} >Navigate to enrolled courses</PrimaryButton>
+    //if (login === 10)
+        // return (<div className="App">
+        //     <header className="App-header">
+        //         <p className="header">Schedule a class</p>
+        //     </header>
+        //     <div className="main">
+        //         <p className="TextTitle">You are not authorized to schedule the class</p>
+        //         <div className="HorizontalDivision">
+        //             <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' style={{ margin: 30 }} >Navigate to enrolled courses</PrimaryButton>
+        //         </div>
+        //     </div>
+        // </div>
+        // )
+
+        if (login === 10)
+        return (<div className="main-content">
+
+
+        <div className="content-part">
+            <div className="container-fluid">
+        
+                <h3 className="heading-strip"> Schedule a Class</h3>
+                <div className="class-form">
+                    <form>
+                        <div className="form-group">
+                        You are not authorized to schedule the class
+                        </div>
+                        <PrimaryButton onClick={navigateToEnrolledCourse} variant='contained' color='primary' style={{ margin: 30 }} >Navigate to enrolled courses</PrimaryButton>
+        
+                    </form>
                 </div>
             </div>
         </div>
+        {/* <footer> Powered By VTeamLabs Open edX</footer> */}
+        </div>
         )
+
+        
 
     const copyLink = (e) => {
         copy(joinUrl);
         setOpen(true);
     }
 
+    // if (login === 3)
+    //     return (<div className="App">
+    //         <header className="App-header">
+    //             <p className="header">Scheduled Class</p>
+    //         </header>
+    //         <div className="main">
+    //             <p className="TextTitle">
+    //                 The class for '{course} - {unit} - {topic}' was successfully scheduled </p>
+    //             <p style={{ marginTop: 0 }}>{startDateState.toString()} to {endDate.toString()}</p>
+    //             <p><a ref={(ref) => linkRef = ref} id='joinlink' className="TextTitle" value={joinUrl}
+    //                 onClick={copyLink}>Team meeting link</a></p>
+    //             <div>
+    //                 <p className="TextTitle">Following enrolled users have been invited:</p>
+    //                 {
+    //                     userEmails.map((item) => {
+    //                         return (
+    //                             <p key={item.emailAddress}>{item.emailAddress.name}</p>
+    //                         )
+    //                     })
+    //                 }
+    //             </div>
+    //             <div className="HorizontalDivision">
+    //                 <PrimaryButton onClick={clearFields} variant='contained' color='primary' style={{ margin: 30 }} >Schedule another Class</PrimaryButton>
+    //             </div>
+    //         </div>
+    //         <Dialog
+    //             open={open}
+    //             TransitionComponent={Transition}
+    //             keepMounted
+    //             aria-labelledby="alert-dialog-slide-title"
+    //             aria-describedby="alert-dialog-slide-description"
+    //         >
+    //             <DialogTitle id="alert-dialog-slide-title">{"Link Copied!"}</DialogTitle>
+    //             <DialogContent>
+    //                 <DialogContentText id="alert-dialog-slide-description">
+    //                     The link has been copied to your clipboard
+    //       </DialogContentText>
+    //             </DialogContent>
+    //             <DialogActions>
+    //                 <Button onClick={() => setOpen(false)} color="primary">
+    //                     Okay
+    //       </Button>
+    //             </DialogActions>
+    //         </Dialog>
+
+    //     </div>
+    //     )
     if (login === 3)
-        return (<div className="App">
-            <header className="App-header">
-                <p className="header">Scheduled Class</p>
-            </header>
-            <div className="main">
-                <p className="TextTitle">
-                    The class for '{course} - {unit} - {topic}' was successfully scheduled </p>
-                <p style={{ marginTop: 0 }}>{startDateState.toString()} to {endDate.toString()}</p>
-                <p><a ref={(ref) => linkRef = ref} id='joinlink' className="TextTitle" value={joinUrl}
-                    onClick={copyLink}>Team meeting link</a></p>
-                <div>
-                    <p className="TextTitle">Following enrolled users have been invited:</p>
-                    {
-                        userEmails.map((item) => {
-                            return (
-                                <p key={item.emailAddress}>{item.emailAddress.name}</p>
-                            )
-                        })
-                    }
-                </div>
-                <div className="HorizontalDivision">
-                    <PrimaryButton onClick={clearFields} variant='contained' color='primary' style={{ margin: 30 }} >Schedule another Class</PrimaryButton>
-                </div>
+    return (<div className="App">
+        <div className="main-content">
+
+
+<div className="content-part">
+<div className="container-fluid">
+
+    <h3 className="heading-strip"> Scheduled Class</h3>
+    <div className="class-form">
+    <p className="TextTitle">
+                The class for '{course} - {unit} - {topic}' was successfully scheduled </p>
+            <p style={{ marginTop: 0 }}>{startDateState.toString()} to {endDate.toString()}</p>
+            <p><a ref={(ref) => linkRef = ref} style={{color:'rgb(169,39,109)'}} id='joinlink' className="TextTitle" value={joinUrl}
+                onClick={copyLink}>Team meeting link</a></p>
+            <div>
+                <p className="TextTitle">Following enrolled users have been invited:</p>
+                {
+                    userEmails.map((item) => {
+                        return (
+                            <p key={item.emailAddress}>{item.emailAddress.name}</p>
+                        )
+                    })
+                }
             </div>
-            <Dialog
-                open={open}
-                TransitionComponent={Transition}
-                keepMounted
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <DialogTitle id="alert-dialog-slide-title">{"Link Copied!"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        The link has been copied to your clipboard
-          </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpen(false)} color="primary">
-                        Okay
-          </Button>
-                </DialogActions>
-            </Dialog>
+            <div className="HorizontalDivision">
+                <PrimaryButton onClick={clearFields} variant='contained' color='primary' style={{ margin: 30 }} >Schedule another Class</PrimaryButton>
+            </div>
+    </div>
+</div>
+</div>
+{/* <footer> Powered By VTeamLabs Open edX</footer> */}
+</div>
+        <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+        >
+            <DialogTitle id="alert-dialog-slide-title">{"Link Copied!"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    The link has been copied to your clipboard
+      </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpen(false)} color="primary">
+                    Okay
+      </Button>
+            </DialogActions>
+        </Dialog>
 
-        </div>
-        )
-
+    </div>
+    )
     return (
-        <div className="App">
-            <header className="App-header">
-                <p className="header">Schedule a class</p>
-            </header>
-            <div className="main">
+        <div className="main-content">
 
-                <div className="Division">
-                    <TextField
-                        type='text'
-                        label='Enter the meeting title'
-                        variant='outlined'
-                        onChange={(event) => {
-                            setTitle(event.target.value);
-                        }}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                    />
-                </div>
-                <div className="HorizontalDivision">
-                    <div className="AnotherDivision">
-                        <p className="TextTitle">From</p>
-                        <MuiPickersUtilsProvider utils={MomentUtils}  >
-                            <DateTimePicker
-                                variant='dialog'
-                                onChange={(date) => {
-                                    setStartDate(date.toDate())
-                                }}
-                                value={startDateState}
-                                disablePast
-                                style={{ width: '15vw' }}
-                            />
-                        </MuiPickersUtilsProvider>
-                    </div>
-                    <div className="AnotherDivision">
-                        <p className="TextTitle">To</p>
-                        <MuiPickersUtilsProvider utils={MomentUtils} >
-                            <DateTimePicker
-                                variant='dialog'
-                                minDate={startDateState}
-                                value={endDate}
-                                onChange={(date) => { setEndDate(date.toDate()) }}
-                                style={{ width: '15vw', alignContent: 'center' }}
-                            />
-                        </MuiPickersUtilsProvider>
-                    </div>
-                </div>
-                <div className='Division'>
-                    <Autocomplete options={courses}
-                        getOptionLabel={(option) => option.course_details.course_name}
-                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                        //onInputChange={courseChanged}
-                        onChange={courseChanged}
-                        renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
 
-                </div>
-                <div className='Division'>
-                    <Autocomplete options={units}
-                        getOptionLabel={(option) => option.name}
-                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                        onChange={unitChanged}
-                        onInputChange={(event, newValue) => setUnit(newValue)}
-                        renderInput={(params) => <TextField {...params} label="Select course section" variant="outlined" />} />
-                </div>
-                <div className='Division'>
-                    <Autocomplete options={topics}
-                        getOptionLabel={(option) => option.name}
-                        style={{ width: '100%', margin: 0, alignSelf: 'center' }}
-                        onChange={topicChanged}
-                        onInputChange={(event, newValue) => setTopic(newValue)}
-                        renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
-                </div>
-                <div className="Division">
-                    <TextField
-                        type='text'
-                        label='Enter additional description'
-                        variant='outlined'
-                        onChange={(event) => {
-                            setDescription(event.target.value);
-                        }}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
-                    />
-                </div>
-                <div className="HorizontalDivision">
-                    <SecondaryButton onClick={clearFields} variant='contained' color='secondary' style={{ margin: 30 }} >Cancel</SecondaryButton>
-                    <PrimaryButton onClick={addEvent} variant='contained' color='primary' style={{ margin: 30 }} >Submit</PrimaryButton>
+            <div className="content-part">
+                <div className="container-fluid">
+
+                    <h3 className="heading-strip"> Schedule a Class</h3>
+                    <div className="class-form">
+                        <form>
+                            <div className="form-group">
+                                <TextField
+                                
+                                    type='text'
+                                    label='Enter the meeting title'
+                                    variant='outlined'
+                                    onChange={(event) => {
+                                        setTitle(event.target.value);
+                                    }}
+                                    style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                                />      </div>
+                            <div className="form-group">
+                                <div className="form-left"> <label>From: </label>  <MuiPickersUtilsProvider utils={MomentUtils}  >
+                                    <DateTimePicker
+                                        variant='dialog'
+                                        onChange={(date) => {
+                                            setStartDate(date.toDate())
+                                        }}
+                                        value={startDateState}
+                                        disablePast
+                                        style={{ width: '15vw' }}
+                                    />
+                                </MuiPickersUtilsProvider> </div>
+                                <div className="form-right"> <label>To: </label>   <MuiPickersUtilsProvider utils={MomentUtils} >
+                                    <DateTimePicker
+                                        variant='dialog'
+                                        minDate={startDateState}
+                                        value={endDate}
+                                        onChange={(date) => { setEndDate(date.toDate()) }}
+                                        style={{ width: '15vw', alignContent: 'center' }}
+                                    />
+                                </MuiPickersUtilsProvider> </div>
+                            </div>
+                            <div className="form-group">
+
+                                <Autocomplete options={courses}
+                                    getOptionLabel={(option) => option.course_details.course_name}
+                                    style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                                    //onInputChange={courseChanged}
+                                    onChange={courseChanged}
+                                    renderInput={(params) => <TextField {...params} label="Select the course" variant="outlined" />} />
+                            </div>
+
+                            <div className="form-group">
+
+                                <Autocomplete options={units}
+                                    getOptionLabel={(option) => option.name}
+                                    style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                                    onChange={unitChanged}
+                                    onInputChange={(event, newValue) => setUnit(newValue)}
+                                    renderInput={(params) => <TextField {...params} label="Select course section" variant="outlined" />} />
+                            </div>
+
+                            <div className="form-group">
+
+                                <Autocomplete options={topics}
+                                    getOptionLabel={(option) => option.name}
+                                    style={{ width: '100%', margin: 0, alignSelf: 'center' }}
+                                    onChange={topicChanged}
+                                    onInputChange={(event, newValue) => setTopic(newValue)}
+                                    renderInput={(params) => <TextField {...params} label="Select course unit" variant="outlined" />} />
+                            </div>
+
+                            <div className="form-group">
+                                <TextField
+                                    type='text'
+                                    label='Enter additional description'
+                                    variant='outlined'
+                                    onChange={(event) => {
+                                        setDescription(event.target.value);
+                                    }}
+                                    style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10000, borderWidth: 5, borderColor: 'black' }}
+                                />
+                            </div>
+
+
+                            {/* <button onClick={addEvent} className="btn btn-default primary-button">Submit</button>
+                            <button onClick={clearFields} className="btn btn-default secondary-button">Cancel</button> */}
+{/* <SecondaryButton onClick={clearFields} variant='contained' color='secondary' className="btn btn-default secondary-button" style={{ margin: 30 }} >Cancel</SecondaryButton> */}
+                    <PrimaryButton onClick={addEvent} className="btn btn-default primary-button" variant='contained' color='primary'  >Submit</PrimaryButton>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <footer> Powered By VTeamLabs Open edX</footer>
+            {/* <footer> Powered By VTeamLabs Open edX</footer> */}
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../Course.css';
+
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { UserDetailsContext } from '../App';
@@ -77,54 +77,38 @@ function CourseList() {
 
     let course = courses.map((course) => {
         return (
-            <li key={course.id} className="courses-listing-item">
-                <article className="course" id="course-v1:UniversityD+AI101+2020_T1" role="region" aria-label="Introduction to Artificial Intelligence">
-                    <div onClick={() => navigateToCourseDetail(course)}>
-                        <header className="course-image">
-                            <div className="cover-image">
-                                <img src={course.media.image.small} alt={course.name} />
-                                <div className="learn-more" aria-hidden="true">LEARN MORE</div>
-                            </div>
-                        </header>
-                        <div className="course-info" aria-hidden="true">
-                            <h2 className="course-name">
-                                <span className="course-organization">{course.org}</span>
-                                <span className="course-code">{course.number}</span>
-                                <span className="course-title"><a href={`https://edxvteam.com/courses/${course.course_id}/about`}>{course.name}</a></span>
-                            </h2>
-
-                            <div className="course-date localized_datetime"
-                                aria-hidden="true" data-format="shortDate"
-                                data-datetime="2020-09-01T00:00:00+0000"
-                                data-language="en"
-                                data-string="Starts: {date}">{course.start_display}</div>
-                        </div>
+            <li key={course.id}>
+                <div class="box-detail">
+                    <div class="box-detail-top">
+                        <figure>
+                            <img src={course.media.image.small} alt={course.name} />
+                        </figure>
+                        <h4>
+                            {course.org}
+                        </h4>
                     </div>
-                </article>
+                    <div class="box-detail-bottom">
+                        <h5>{course.name} </h5>
+                        <span class="space"></span>
+                        <p class="name">{course.number} </p>
+                        <p class="date">{course.start_display} </p>
+                    </div>
+                    <a onClick={() => navigateToCourseDetail(course)} class="button">View Course  <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                </div>
             </li>
         )
     })
-
     return (
         <div>
-            <div className="content-wrapper main-container" id="content" dir="ltr">
-                <main id="main" aria-label="Content">
-                    <section className="find-courses">
-                        <section className="courses-container">
-                            <header className="App-header">
-                                <p className="header">Enrolled Courses</p>
-                            </header>
-                            <div className="courses no-course-discovery" role="region" aria-label="List of Courses">
-
-                                <ul style={{ margin: '0 30vh' }} className="courses-listing courses-list">
-                                    {course}
-                                </ul>
-                            </div>
-                        </section>
-                    </section>
-                </main>
-            </div>
-            <footer> Powered By VTeamLabs Open edX</footer>
+            <div class="main-content">
+                <div class="content-part">
+                    <div class="container-fluid">
+                        <h3 class="heading-strip"> Enrolled Courses</h3>
+                        <div class="box-1">
+                            <ul>{course}</ul>
+                        </div>
+                    </div></div></div>
+            {/* <footer> Powered By VTeamLabs Open edX</footer> */}
         </div>
     )
 }

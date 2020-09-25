@@ -40,8 +40,8 @@ function Assessment() {
         <div>
             {!noAssessment && 
             <div>
-            <a onClick={() => redirectToFormsView("AI" )}><p className="assessmentText">{"Artificial Intelligence Assessment"}</p></a>
-            <a onClick={() => redirectToFormsView("Demo")}><p className="assessmentText">{"Demo Assessment"}</p></a>
+            <a style={{color:'rgb(169,39,109)'}} onClick={() => redirectToFormsView("AI" )}><p className="assessmentText">{"Artificial Intelligence Assessment"}</p></a>
+            <a style={{color:'rgb(169,39,109)'}} onClick={() => redirectToFormsView("Demo")}><p className="assessmentText">{"Demo Assessment"}</p></a>
             </div>}
             {noAssessment ? <p className="assessment">{"No assessment"}</p> : <p className="assessment">{"Assessment will be viewed in different tab"}</p>}
         </div>
@@ -49,15 +49,19 @@ function Assessment() {
             <iframe title={assessementType} src={studentAssessmentLink} frameBorder="0" marginWidth="0" marginHeight="0" className="assessmentFrame" allowFullScreen> </iframe>
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <p className="header">Assessment</p>
-            </header>
-            <div className="main">
-                {assessement}
-            </div>
-            <footer> Powered By VTeamLabs Open edX</footer>
+            <div className="App">
+            <div class="main-content">
+
+
+<div class="content-part">
+    <div class="container-fluid">
+
+        <h3 class="heading-strip"> Assessment</h3>
+        <div class="class-form">
+        {assessement}
         </div>
+            {/* <footer> Powered By VTeamLabs Open edX</footer> */}
+        </div></div></div></div>
     )
 }
 
