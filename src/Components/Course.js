@@ -20,6 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Course = ((props) => {
     console.log(props);
+    
     const [course, setCourse] = useState([]);
     const [view, setView] = useState('');
     const [open, setOpen] = useState(false);
@@ -72,7 +73,7 @@ const Course = ((props) => {
                 const meet = response.data.results[0] ? response.data.results[0] : "No meeting scheduled";
                 setMeetDetail(meet);
                 if (meet.id) {
-                    Axios.get('https://edxvteam.com/api/discussion/v1/comments?thread_id=' + meet.id,
+                    Axios.get('https://edxvteam.com/api/discussion/v1/comments/?thread_id=' + meet.id,
                         {
                             headers: {
                                 Authorization: `Bearer ${EdxTokenContext.edxToken}`
